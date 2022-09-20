@@ -1,0 +1,13 @@
+.lr {
+  height: 100%;
+}
+.lr__container {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+/*# sourceMappingURL=app.component.css.map */

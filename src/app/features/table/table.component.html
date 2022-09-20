@@ -1,0 +1,32 @@
+<div class="lr__table">
+    <table class="lr__table-container">
+        <tr class="lr__table-tr tr-header">
+            <th rowspan="2">№ з/п</th>
+            <th rowspan="2">Назва об'єкту</th>
+            <th rowspan="2">Назва забруднюючої речовини</th>
+            <th rowspan="2">Об'єм викидів забруднюючої речовини</th>
+            <th colspan="2">Нормативи ГДВ забруднюючих речовин із стаціонарних джерел</th>
+            <th rowspan="2">Заходи, спрямовані на зменшення об'єму викидів шкідливих речовин</th>
+        </tr>
+        <tr class="lr__table-tr tr-header">
+            <th>Величина масової витрати, г/год.</th>
+            <th>Гранично допустимі викиди, мг/м3</th>
+        </tr>
+        <tr *ngIf="loading" class="lr__table-tr loading">
+            <th colspan="7">Loading...</th>
+        </tr>
+        <tr class="lr__table-tr loading" *ngFor="let geoObject of geoObjects">
+            <td>{{geoObject.id}}</td>
+            <td>{{geoObject.name}}</td>
+            <td>{{geoObject['pollutant_name']}}</td>
+            <td>{{geoObject.emissions}}</td>
+            <td>{{geoObject['gdv_standards']['mass_consumption']}}</td>
+            <td>{{geoObject['gdv_standards'].gdv}}</td>
+            <td>{{geoObject.activities}}</td>
+        </tr>
+    </table>
+
+    <div class="lr__table-control">
+        <button class="lr__table-button">Порівняти викиди з ГДК</button>
+    </div>
+</div>

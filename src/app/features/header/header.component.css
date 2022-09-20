@@ -1,0 +1,37 @@
+.lr__header {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  background-color: lightskyblue;
+}
+.lr__header-title {
+  font-size: 22px;
+  font-weight: 600;
+  padding: 20px 10px;
+}
+.lr__header-info {
+  position: absolute;
+  right: 35px;
+  bottom: -60px;
+  width: auto;
+  padding: 10px;
+  transition: 0.2s ease-in-out all;
+  opacity: 0;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 0 8px #9c9c9c;
+}
+.lr__header-info-icon {
+  font-size: 32px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 15px 30px 15px 0;
+  cursor: pointer;
+  color: white;
+}
+.lr__header-info-icon:hover + .lr__header-info {
+  opacity: 1;
+}
+
+/*# sourceMappingURL=header.component.css.map */
