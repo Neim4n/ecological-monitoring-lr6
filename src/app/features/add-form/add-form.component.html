@@ -1,0 +1,36 @@
+<div class="lr__form">
+
+    <form class="lr__form-container" (submit)="onSubmit()" #f="ngForm" novalidate>
+        <h3 class="lr__form-header">Додати новий об'єкт</h3>
+        <input class="lr__form-input"
+               name="name"
+               placeholder="Назва об'єкту"
+               type="text" [(ngModel)]="this.form.name"
+               minlength="3"
+               required>
+        <input class="lr__form-input"
+               name="pollutant_name"
+               placeholder="Назва забруднюючої речовини"
+               type="text"
+               [(ngModel)]="this.form.pollutant_name"
+               minlength="3"
+               required>
+        <input class="lr__form-input"
+               name="emissions"
+               placeholder="Об'єм викидів забруднюючої речовини т/рік"
+               type="number"
+               [(ngModel)]="this.form.emissions" required>
+        <input class="lr__form-input"
+               name="mass_consumption"
+               placeholder="Величина масової витрати, г/год."
+               type="number"
+               [(ngModel)]="this.form.gdv_standards.mass_consumption" required>
+        <input class="lr__form-input"
+               name="gdv"
+               placeholder="Гранично допустимі викиди, мг/м3"
+               type="number"
+               [(ngModel)]="this.form.gdv_standards.gdv" required>
+        <button class="lr__form-submit" type="submit">Додати</button>
+    </form>
+</div>
+

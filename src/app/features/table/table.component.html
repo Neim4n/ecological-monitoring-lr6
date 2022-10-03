@@ -4,9 +4,9 @@
             <th rowspan="2">№ з/п</th>
             <th rowspan="2">Назва об'єкту</th>
             <th rowspan="2">Назва забруднюючої речовини</th>
-            <th rowspan="2">Об'єм викидів забруднюючої речовини</th>
+            <th rowspan="2">Об'єм викидів забруднюючої речовини т/рік</th>
             <th colspan="2">Нормативи ГДВ забруднюючих речовин із стаціонарних джерел</th>
-            <th rowspan="2">Заходи, спрямовані на зменшення об'єму викидів шкідливих речовин</th>
+            <th rowspan="2">Статус перевищення викидів</th>
         </tr>
         <tr class="lr__table-tr tr-header">
             <th>Величина масової витрати, г/год.</th>
@@ -16,17 +16,27 @@
             <th colspan="7">Loading...</th>
         </tr>
         <tr class="lr__table-tr loading" *ngFor="let geoObject of geoObjects">
-            <td>{{geoObject.id}}</td>
+            <td *ngIf="!isEditing">{{geoObject.id}}</td>
+            <td *ngIf="isEditing">
+                <button class="lr__table-button delete" (click)="onDelete(geoObject.id)">X</button>
+            </td>
             <td>{{geoObject.name}}</td>
             <td>{{geoObject['pollutant_name']}}</td>
             <td>{{geoObject.emissions}}</td>
             <td>{{geoObject['gdv_standards']['mass_consumption']}}</td>
             <td>{{geoObject['gdv_standards'].gdv}}</td>
-            <td>{{geoObject.activities}}</td>
+            <td [class]="{'bad-status': geoObject.status > 1, 'good-status': geoObject.status <= 1 }">
+                {{geoObject.status ? geoObject.status + ' %' : ''}}
+            </td>
         </tr>
     </table>
+    <div class="lr__table-details">
+        <a [href]="information.url"> Детальна інформація ({{information.year}} рік)</a>
+    </div>
 
     <div class="lr__table-control">
-        <button class="lr__table-button">Порівняти викиди з ГДК</button>
+        <button class="lr__table-button" (click)="compareEmissions()">Порівняти викиди з ГДК</button>
+        <button class="lr__table-button" [ngClass]="{'editing': isEditing}" (click)="toggleEdit()">Редагувати таблицю
+        </button>
     </div>
 </div>

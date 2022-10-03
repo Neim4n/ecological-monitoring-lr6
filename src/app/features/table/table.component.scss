@@ -8,7 +8,7 @@
         
         &-container {
             overflow: hidden;
-            margin: 70px 0;
+            margin: 70px 0 0 0;
             border-collapse: collapse;
             border: 8px solid white;
             border-radius: 20px;
@@ -31,25 +31,64 @@
             }
         }
         
+        &-details {
+            margin: 10px 0 70px 20px;
+            align-self: flex-start;
+            
+            a {
+                color: black;
+                
+                &:hover {
+                    text-decoration: underline;
+                    color: blue;
+                }
+            }
+        }
+        
         &-tr {
             &.loading {
                 th {
                     text-align: center;
                 }
             }
+            
+            .bad-status {
+                background-color: #ffb0b0;
+            }
+            
+            .good-status {
+                background-color: #b3f7b3;
+            }
         }
         
         &-button {
             font-size: 14px;
+            font-weight: 600;
+            margin: 0 20px;
             padding: 5px 10px;
+            transition: 0.2s ease-in-out all;
             border: 1px solid grey;
             border-radius: 20px;
-            font-weight: 600;
             background-color: lightskyblue;
-            transition: 0.2s ease-in-out all;
             
             &:hover {
                 box-shadow: 0 0 8px #9c9c9c;
+            }
+            
+            &.editing {
+                box-shadow: 0 0 8px lightskyblue;
+            }
+            
+            &.delete {
+                margin: 0;
+                padding: 0;
+                color: red;
+                border: 0;
+                background-color: unset;
+                
+                &:hover {
+                    box-shadow: 0 0 8px indianred;
+                }
             }
         }
     }

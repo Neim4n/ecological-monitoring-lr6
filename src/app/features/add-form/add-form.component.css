@@ -1,0 +1,51 @@
+.lr__form {
+  width: 100%;
+  padding: 70px 30px;
+}
+.lr__form-container {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  flex-direction: column;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.lr__form-container.ng-submitted .lr__form-input.ng-invalid {
+  border: 1px solid indianred;
+}
+.lr__form-header {
+  font-size: 20px;
+  font-weight: 600;
+  display: block;
+  width: 100%;
+  padding: 10px 30px;
+  text-align: center;
+  background-color: lightskyblue;
+  border-radius: 20px;
+  border: 1px solid grey;
+}
+.lr__form-input {
+  font-size: 16px;
+  width: 100%;
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid grey;
+  border-radius: 20px;
+}
+.lr__form-input.ng-touched.ng-invalid {
+  border: 1px solid indianred;
+}
+.lr__form-submit {
+  font-size: 14px;
+  padding: 5px 10px;
+  border: 1px solid grey;
+  border-radius: 20px;
+  font-weight: 600;
+  background-color: lightskyblue;
+  transition: 0.2s ease-in-out all;
+}
+.lr__form-submit:hover {
+  box-shadow: 0 0 8px #9c9c9c;
+}
+
+/*# sourceMappingURL=add-form.component.css.map */

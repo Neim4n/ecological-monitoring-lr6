@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {DataBaseService} from "../../core/services/data-base/data-base.service";
+import { Component, OnInit } from '@angular/core';
+import { DataBaseService } from "../../core/services/data-base/data-base.service";
 import { delay, finalize } from "rxjs";
 
 @Component({
@@ -9,13 +9,16 @@ import { delay, finalize } from "rxjs";
 })
 export class TableComponent implements OnInit {
     geoObjects: any[];
+    information: any;
     loading: boolean = false
+    isEditing: boolean = false;
 
     constructor(private dataBaseService: DataBaseService) {
     }
 
     ngOnInit(): void {
-       this.loadGeoObjects();
+        this.loadGeoObjects();
+        this.loadInformation();
     }
 
     loadGeoObjects() {
@@ -24,14 +27,39 @@ export class TableComponent implements OnInit {
         this.dataBaseService.getGeoObjects()
             .pipe(
                 delay(300),
-                finalize(()=> this.loading = false)
+                finalize(() => this.loading = false)
             )
             .subscribe((res: any) => {
                 this.geoObjects = res;
             });
     }
 
-    compareEmissions() {
+    loadInformation() {
+        this.dataBaseService.getInformation()
+            .subscribe((res: any) => {
+                this.information = res;
+            });
+    }
 
+    compareEmissions() {
+        this.geoObjects.forEach((object: any) => {
+            const newEmissions = object.emissions * 1000 / (365 * 24);
+            object.status = (newEmissions / object['gdv_standards']['mass_consumption'] * 100).toFixed(2);
+        })
+
+        console.log(this.geoObjects);
+    }
+
+    toggleEdit() {
+        this.isEditing = !this.isEditing;
+    }
+
+    onDelete(id: number) {
+        if (confirm("Ви впевнені, що хочете видалити?")) {
+            this.geoObjects = this.geoObjects.filter((object: any) => object.id !== id);
+            this.dataBaseService.deleteGeoObject(id)
+                .subscribe((res: any) => console.log(res),
+                    (err) => console.error(err));
+        }
     }
 }

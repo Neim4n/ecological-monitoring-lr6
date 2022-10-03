@@ -7,7 +7,7 @@
 }
 .lr__table-container {
   overflow: hidden;
-  margin: 70px 0;
+  margin: 70px 0 0 0;
   border-collapse: collapse;
   border: 8px solid white;
   border-radius: 20px;
@@ -26,20 +26,51 @@
   text-align: center;
   border: 1px solid grey;
 }
+.lr__table-details {
+  margin: 10px 0 70px 20px;
+  align-self: flex-start;
+}
+.lr__table-details a {
+  color: black;
+}
+.lr__table-details a:hover {
+  text-decoration: underline;
+  color: blue;
+}
 .lr__table-tr.loading th {
   text-align: center;
 }
+.lr__table-tr .bad-status {
+  background-color: #ffb0b0;
+}
+.lr__table-tr .good-status {
+  background-color: #b3f7b3;
+}
 .lr__table-button {
   font-size: 14px;
+  font-weight: 600;
+  margin: 0 20px;
   padding: 5px 10px;
+  transition: 0.2s ease-in-out all;
   border: 1px solid grey;
   border-radius: 20px;
-  font-weight: 600;
   background-color: lightskyblue;
-  transition: 0.2s ease-in-out all;
 }
 .lr__table-button:hover {
   box-shadow: 0 0 8px #9c9c9c;
+}
+.lr__table-button.editing {
+  box-shadow: 0 0 8px lightskyblue;
+}
+.lr__table-button.delete {
+  margin: 0;
+  padding: 0;
+  color: red;
+  border: 0;
+  background-color: unset;
+}
+.lr__table-button.delete:hover {
+  box-shadow: 0 0 8px indianred;
 }
 
 /*# sourceMappingURL=table.component.css.map */
