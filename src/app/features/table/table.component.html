@@ -33,7 +33,7 @@
             </td>
         </tr>
     </table>
-    <div class="lr__table-details">
+    <div class="lr__table-details" *ngIf="information?.url">
         <a [href]="information.url"> Детальна інформація ({{information.year}} рік)</a>
     </div>
 

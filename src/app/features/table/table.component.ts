@@ -46,6 +46,7 @@ export class TableComponent implements OnInit {
         this.isChecked = !this.isChecked;
         this.geoObjects.forEach((object: any) => {
             const newEmissions = object.emissions * 1000 / (365 * 24);
+            console.log(newEmissions, object['gdv_standards']['mass_consumption'])
             object.status = newEmissions >= object['gdv_standards']['mass_consumption'];
         })
     }
