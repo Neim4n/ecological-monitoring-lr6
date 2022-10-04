@@ -16,7 +16,6 @@ export class DataBaseService {
     }
 
     addNewGeoObject(body: any) {
-        console.log("add");
         return this.http.post(API_URL + '/geo_objects', body)
     }
 

@@ -18,15 +18,18 @@
         <tr class="lr__table-tr loading" *ngFor="let geoObject of geoObjects">
             <td *ngIf="!isEditing">{{geoObject.id}}</td>
             <td *ngIf="isEditing">
-                <button class="lr__table-button delete" (click)="onDelete(geoObject.id)">X</button>
+                <button class="lr__table-button delete" (click)="onDelete(geoObject.id)">
+                    <mat-icon>clear</mat-icon>
+                </button>
             </td>
             <td>{{geoObject.name}}</td>
             <td>{{geoObject['pollutant_name']}}</td>
             <td>{{geoObject.emissions}}</td>
             <td>{{geoObject['gdv_standards']['mass_consumption']}}</td>
             <td>{{geoObject['gdv_standards'].gdv}}</td>
-            <td [class]="{'bad-status': geoObject.status > 1, 'good-status': geoObject.status <= 1 }">
-                {{geoObject.status ? geoObject.status + ' %' : ''}}
+            <td [class]="{'bad-status': geoObject.status && isChecked, 'good-status': !geoObject.status && isChecked }">
+                <mat-icon *ngIf="!geoObject.status && isChecked">check</mat-icon>
+                <mat-icon *ngIf="geoObject.status && isChecked">clear</mat-icon>
             </td>
         </tr>
     </table>
@@ -35,7 +38,8 @@
     </div>
 
     <div class="lr__table-control">
-        <button class="lr__table-button" (click)="compareEmissions()">Порівняти викиди з ГДК</button>
+        <button class="lr__table-button" [disabled]="isChecked" (click)="compareEmissions()">Порівняти викиди з ГДК
+        </button>
         <button class="lr__table-button" [ngClass]="{'editing': isEditing}" (click)="toggleEdit()">Редагувати таблицю
         </button>
     </div>

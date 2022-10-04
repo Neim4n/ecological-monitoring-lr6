@@ -10,7 +10,8 @@ import { delay, finalize } from "rxjs";
 export class TableComponent implements OnInit {
     geoObjects: any[];
     information: any;
-    loading: boolean = false
+    loading: boolean = false;
+    isChecked: boolean = false;
     isEditing: boolean = false;
 
     constructor(private dataBaseService: DataBaseService) {
@@ -42,12 +43,11 @@ export class TableComponent implements OnInit {
     }
 
     compareEmissions() {
+        this.isChecked = !this.isChecked;
         this.geoObjects.forEach((object: any) => {
             const newEmissions = object.emissions * 1000 / (365 * 24);
-            object.status = (newEmissions / object['gdv_standards']['mass_consumption'] * 100).toFixed(2);
+            object.status = newEmissions >= object['gdv_standards']['mass_consumption'];
         })
-
-        console.log(this.geoObjects);
     }
 
     toggleEdit() {
