@@ -46,9 +46,23 @@ export class TableComponent implements OnInit {
         this.isChecked = !this.isChecked;
         this.geoObjects.forEach((object: any) => {
             const newEmissions = object.emissions * 1000 / (365 * 24);
-            console.log(newEmissions, object['gdv_standards']['mass_consumption'])
             object.status = newEmissions >= object['gdv_standards']['mass_consumption'];
+            object.overrun = (newEmissions / object['gdv_standards']['mass_consumption'] * 100).toFixed(2);
         })
+
+        const newGeoObjects = this.geoObjects.map((object: any) => JSON.parse(JSON.stringify(object)));
+
+        newGeoObjects.forEach((object: any) => {
+            delete object.status;
+        })
+
+        this.geoObjects.forEach((object: any) => {
+            const newObject = {...object};
+            delete  newObject.status;
+
+            this.dataBaseService.saveResults(newObject.id, newObject).subscribe((res) => console.log(res));
+        })
+
     }
 
     toggleEdit() {

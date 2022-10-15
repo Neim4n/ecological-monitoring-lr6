@@ -28,6 +28,12 @@
   border: 1px solid grey;
   height: 48px;
 }
+.lr__table-container th.result span, .lr__table-container td.result span {
+  padding: 0px 0 15px 0;
+}
+.lr__table-container th.result mat-icon, .lr__table-container td.result mat-icon {
+  padding: 5px 10px 0 0px;
+}
 .lr__table-details {
   margin: 10px 0 70px 20px;
   align-self: flex-start;

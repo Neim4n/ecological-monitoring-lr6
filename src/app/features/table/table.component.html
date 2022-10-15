@@ -16,7 +16,7 @@
             <th colspan="7">Loading...</th>
         </tr>
         <tr class="lr__table-tr loading" *ngFor="let geoObject of geoObjects">
-            <td *ngIf="!isEditing">{{geoObject.id}}</td>
+            <td *ngIf="!isEditing">{{geoObject.id + 1}}</td>
             <td *ngIf="isEditing">
                 <button class="lr__table-button delete" (click)="onDelete(geoObject.id)">
                     <mat-icon>clear</mat-icon>
@@ -27,7 +27,8 @@
             <td>{{geoObject.emissions}}</td>
             <td>{{geoObject['gdv_standards']['mass_consumption']}}</td>
             <td>{{geoObject['gdv_standards'].gdv}}</td>
-            <td [class]="{'bad-status': geoObject.status && isChecked, 'good-status': !geoObject.status && isChecked }">
+            <td class="result" [class]="{'bad-status': geoObject.status && isChecked, 'good-status': !geoObject.status && isChecked }">
+                <span *ngIf="geoObject.overrun && isChecked">{{geoObject.overrun}} %</span>
                 <mat-icon *ngIf="!geoObject.status && isChecked">check</mat-icon>
                 <mat-icon *ngIf="geoObject.status && isChecked">clear</mat-icon>
             </td>
