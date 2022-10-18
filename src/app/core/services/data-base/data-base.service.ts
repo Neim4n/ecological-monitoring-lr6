@@ -23,11 +23,9 @@ export class DataBaseService {
         return this.http.delete(API_URL + '/geo_objects/' + id)
     }
 
-    getInformation() {
-        return this.http.get(API_URL + '/additional_information');
-    }
-
     saveResults(id: number, body: any) {
         return this.http.put(API_URL + '/geo_objects/' + id, body)
     }
 }
+
+

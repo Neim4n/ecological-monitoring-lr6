@@ -9,17 +9,31 @@ import { delay, finalize } from "rxjs";
 })
 export class TableComponent implements OnInit {
     geoObjects: any[];
-    information: any;
     loading: boolean = false;
     isChecked: boolean = false;
     isEditing: boolean = false;
+
+    emissionTypes: any = {
+        1: 'Викиди в атмосферне повітря забруднюючих',
+        2: 'Cкиди забруднюючих речовин у водні обєкти',
+        3: 'Розміщення відходів',
+        4: 'Утворення радіоактивних відходів',
+        5: 'Зберігання радіоактивних відходів',
+    }
+
+    emissionDmensionalUnits: any = {
+        1: ' т ',
+        2: ' т ',
+        3: ' т ',
+        4: ' м^3 ',
+        5: ' м^3 ',
+    }
 
     constructor(private dataBaseService: DataBaseService) {
     }
 
     ngOnInit(): void {
         this.loadGeoObjects();
-        this.loadInformation();
     }
 
     loadGeoObjects() {
@@ -35,38 +49,44 @@ export class TableComponent implements OnInit {
             });
     }
 
-    loadInformation() {
-        this.dataBaseService.getInformation()
-            .subscribe((res: any) => {
-                this.information = res;
-            });
+    calculateTaxAmount() {
+        this.geoObjects.forEach((object: any) => {
+            let tax_amount = 0;
+
+            object.emissions_info.forEach((info: any) => {
+                switch (info.emissions_type) {
+                    case (1):
+                        tax_amount += info.emissions * info.tax_rates;
+                        break;
+                    case (2):
+                        tax_amount += info.emissions * info.tax_rates * info.water_rate;
+                        break;
+                    case (3):
+                        tax_amount += info.emissions * info.tax_rates * info.position_rate * info.water_atmosphere_rate;
+                        break;
+                    case (4):
+                        tax_amount += info.On * info.tax_rates + (info.rns_rate * info.c1ns * info.V1ns + info.rv_rate * info.c1v * info.V1v) + 1 / 32 * (info.rns_rate * info.c2ns * info.V2ns + info.rv_rate * info.c2v * info.V2v);
+                        break;
+                    case (5):
+                        tax_amount += info.emissions * info.tax_rates * info.number_of_quarters;
+                        break;
+                    default:
+                        break;
+                }
+            })
+
+            object.emissions_info.tax_amount = tax_amount.toFixed(2);
+        })
     }
 
-    compareEmissions() {
-        this.isChecked = !this.isChecked;
-        this.geoObjects.forEach((object: any) => {
-            const newEmissions = object.emissions * 1000 / (365 * 24);
-            object.status = newEmissions >= object['gdv_standards']['mass_consumption'];
-            object.overrun = (newEmissions / object['gdv_standards']['mass_consumption'] * 100).toFixed(2);
-        })
-
-        const newGeoObjects = this.geoObjects.map((object: any) => JSON.parse(JSON.stringify(object)));
-
-        newGeoObjects.forEach((object: any) => {
-            delete object.status;
-        })
-
-        this.geoObjects.forEach((object: any) => {
-            const newObject = {...object};
-            delete  newObject.status;
-
-            this.dataBaseService.saveResults(newObject.id, newObject).subscribe((res) => console.log(res));
-        })
-
+    toggleObjectEdit(index: number) {
+        this.geoObjects[index].isEditing = !this.geoObjects[index].isEditing;
     }
 
-    toggleEdit() {
-        this.isEditing = !this.isEditing;
+    saveEditObject(index: number) {
+        const editGeoObject = this.geoObjects[index];
+        delete editGeoObject.isEditing;
+        this.dataBaseService.saveResults(editGeoObject.id, editGeoObject).subscribe((res) => console.log(res));
     }
 
     onDelete(id: number) {

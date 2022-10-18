@@ -1,6 +1,6 @@
 .lr {
     &__form {
-        $form : &;
+        $form: &;
         width: 100%;
         padding: 70px 30px;
         
@@ -13,7 +13,7 @@
             margin: 0 auto;
             
             &.ng-submitted {
-               #{$form}-input.ng-invalid {
+                #{$form}-input.ng-invalid, #{$form}-select.ng-invalid {
                     border: 1px solid indianred;
                 }
             }
@@ -32,7 +32,7 @@
         }
         
         
-        &-input {
+        &-input, &-select {
             font-size: 16px;
             width: 100%;
             margin: 10px auto;
@@ -42,6 +42,19 @@
             
             &.ng-touched.ng-invalid {
                 border: 1px solid indianred;
+            }
+            
+            option {
+                color: black;
+                
+            }
+            
+            &.ng-untouched {
+                color: grey;
+            }
+            
+            &.ng-dirty {
+                color: black;
             }
         }
         
@@ -53,7 +66,7 @@
             font-weight: 600;
             background-color: lightskyblue;
             transition: 0.2s ease-in-out all;
-    
+            
             &:hover {
                 box-shadow: 0 0 8px #9c9c9c;
             }

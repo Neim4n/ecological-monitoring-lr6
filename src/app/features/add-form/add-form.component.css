@@ -10,7 +10,7 @@
   max-width: 700px;
   margin: 0 auto;
 }
-.lr__form-container.ng-submitted .lr__form-input.ng-invalid {
+.lr__form-container.ng-submitted .lr__form-input.ng-invalid, .lr__form-container.ng-submitted .lr__form-select.ng-invalid {
   border: 1px solid indianred;
 }
 .lr__form-header {
@@ -24,7 +24,7 @@
   border-radius: 20px;
   border: 1px solid grey;
 }
-.lr__form-input {
+.lr__form-input, .lr__form-select {
   font-size: 16px;
   width: 100%;
   margin: 10px auto;
@@ -32,8 +32,17 @@
   border: 1px solid grey;
   border-radius: 20px;
 }
-.lr__form-input.ng-touched.ng-invalid {
+.lr__form-input.ng-touched.ng-invalid, .lr__form-select.ng-touched.ng-invalid {
   border: 1px solid indianred;
+}
+.lr__form-input option, .lr__form-select option {
+  color: black;
+}
+.lr__form-input.ng-untouched, .lr__form-select.ng-untouched {
+  color: grey;
+}
+.lr__form-input.ng-dirty, .lr__form-select.ng-dirty {
+  color: black;
 }
 .lr__form-submit {
   font-size: 14px;

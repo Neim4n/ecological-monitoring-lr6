@@ -2,6 +2,8 @@
 
     <form class="lr__form-container" (submit)="onSubmit()" #f="ngForm" novalidate>
         <h3 class="lr__form-header">Додати новий об'єкт</h3>
+
+        <!-- Name , Pollutant_name, Emissions_type -->
         <input class="lr__form-input"
                name="name"
                placeholder="Назва об'єкту"
@@ -12,24 +14,175 @@
                name="pollutant_name"
                placeholder="Назва забруднюючої речовини"
                type="text"
-               [(ngModel)]="this.form.pollutant_name"
+               [(ngModel)]="this.form.emissions_info.pollutant_name"
                minlength="3"
                required>
+        <select class="lr__form-input lr__form-select" name="emissions_type"
+                [(ngModel)]="this.form.emissions_info.emissions_type"
+                (change)="onChangeTypeSelect()"
+                required>
+            <option value="null" disabled selected hidden>Вид забруднення</option>
+            <option value="1">Викиди в атмосферне повітря</option>
+            <option value="2">Скиди забруднюючих речовин у водні об'єкти</option>
+            <option value="3">Розміщення відходів</option>
+            <option value="4">Утворення радіоактивних відходів</option>
+            <option value="5">Тимчасове зберігання радіоактивних відходів</option>
+        </select>
+        <!-- Name , Pollutant_name, Emissions_type -->
+
+        <!-- emissions_type == 2 -->
+        <select class="lr__form-input lr__form-select" name="water_rate"
+                *ngIf="this.form.emissions_info.emissions_type == 2"
+                [(ngModel)]="this.form.emissions_info.water_rate"
+                required>
+            <option value="null" disabled selected hidden>Водяний об'єкт</option>
+            <option value="1.5">Озера, ставки</option>
+            <option value="1">Інші водні об'єкти</option>
+        </select>
+        <!-- emissions_type == 3 -->
+        <select class="lr__form-input lr__form-select" name="position_rate"
+                *ngIf="this.form.emissions_info.emissions_type == 3"
+                [(ngModel)]="this.form.emissions_info.position_rate"
+                required>
+            <option value="null" disabled selected hidden>Тип звалища</option>
+            <option value="3">Звалища, що не забезпечують виключення забруднення атмосферного повітря або водних
+                об'єктів
+            </option>
+            <option value="1">Інші</option>
+        </select>
+        <select class="lr__form-input lr__form-select" name="water_atmosphere_rate"
+                [(ngModel)]="this.form.emissions_info.water_atmosphere_rate"
+                *ngIf="this.form.emissions_info.emissions_type == 3"
+                required>
+            <option value="null" disabled selected hidden>Місце розміщення відходів</option>
+            <option value="3">До 3км від населеного пукнту</option>
+            <option value="1">Від 3км і більше від меж населеного пукнту</option>
+        </select>
+        <!-- emissions_type == 4 -->
+        <input class="lr__form-input"
+               name="c1ns"
+               placeholder="Собівартість зберігання 1 м^3 низькоактивних і середньоактивних радіоактивних відходів"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.c1ns"
+               required>
+        <input class="lr__form-input"
+               name="c1v"
+               placeholder="Собівартість зберігання 1 м^3 високоактивних радіоактивних відходів"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.c1v"
+               required>
+        <input class="lr__form-input"
+               name="c2ns"
+               placeholder="Собівартість зберігання 1 м^3 низькоактивних і середньоактивних радіоактивних відходів (до 2019 р.)"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.c2ns"
+               required>
+        <input class="lr__form-input"
+               name="c2v"
+               placeholder="Собівартість зберігання 1 м^3 високоактивних радіоактивних відходів (до 2019 р.)"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.c2v"
+               required>
+        <input class="lr__form-input"
+               name="V1ns"
+               placeholder="Об'єм низькоактивних і середньоактивних радіоактивних відходів"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.V1ns"
+               required>
+        <input class="lr__form-input"
+               name="V1v"
+               placeholder="Об'єм високоактивних радіоактивних відходів"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.V1v"
+               required>
+        <input class="lr__form-input"
+               name="V2ns"
+               placeholder="Об'єм низькоактивних і середньоактивних радіоактивних відходів (до 2019 р.)"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.V2ns"
+               required>
+        <input class="lr__form-input"
+               name="V2v"
+               placeholder="Об'єм високоактивних радіоактивних відходів (до 2019 р.)"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.V2v"
+               required>
+        <input class="lr__form-input"
+               name="On"
+               placeholder="Обсяг виробленної електричної енергії кВт-год"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 4"
+               [(ngModel)]="this.form.emissions_info.On"
+               required>
+        <!-- emissions_type == 5 -->
+        <input class="lr__form-input"
+               name="number_of_quarters"
+               placeholder="Кількість повних календарних кварталів зберігання"
+               type="number"
+               *ngIf="this.form.emissions_info.emissions_type == 5"
+               [(ngModel)]="this.form.emissions_info.number_of_quarters"
+               required>
+        <select class="lr__form-input lr__form-select" name="emissions_radioactive_type"
+                *ngIf="this.form.emissions_info.emissions_type == 5"
+                [(ngModel)]="this.form.emissions_info.emissions_radioactive_type"
+                required>
+            <option value="null" disabled selected hidden>Тип радіоактивних відходів</option>
+            <option value="1">Радіоактивні відходи</option>
+            <option value="2">Радіоактивні відходи, як джерела іонізуючого випромінювання</option>
+        </select>
+
+        <!-- V emissions -->
+
         <input class="lr__form-input"
                name="emissions"
-               placeholder="Об'єм викидів забруднюючої речовини т/рік"
+               *ngIf=" this.form.emissions_info.emissions_type != 4"
+               placeholder="{{
+               this.form.emissions_info.emissions_type == 5 && !this.form.emissions_info.emissions_radioactive_type ? 'Об\'єм радіоактивних відходів':
+               this.form.emissions_info.emissions_type == 5 && this.form.emissions_info.emissions_radioactive_type == 1? 'Об\'єм радіоактивних відходів м^3':
+               this.form.emissions_info.emissions_type == 5 && this.form.emissions_info.emissions_radioactive_type == 2? 'Об\'єм радіоактивних відходів см^3':
+               'Об\'єм викидів забруднюючої речовини т/рік'}}"
                type="number"
-               [(ngModel)]="this.form.emissions" required>
+               [(ngModel)]="this.form.emissions_info.emissions" required>
+
+        <!-- TAX RATES -->
         <input class="lr__form-input"
-               name="mass_consumption"
-               placeholder="Величина масової витрати, г/год."
+               name="tax_rates"
+               placeholder="Налогова ставка"
                type="number"
-               [(ngModel)]="this.form.gdv_standards.mass_consumption" required>
+               *ngIf="this.form.emissions_info.emissions_type != 5 && this.form.emissions_info.emissions_type != 4"
+               [(ngModel)]="this.form.emissions_info.tax_rates" required>
+        <select class="lr__form-input lr__form-select" name="tax_rates"
+                *ngIf="this.form.emissions_info.emissions_type == 5"
+                [(ngModel)]="this.form.emissions_info.tax_rates"
+                required>
+            <option value="null" disabled selected hidden>Налогова ставка</option>
+            <option value="{{this.form.emissions_info.emissions_radioactive_type == 1? 602418.72 : 20080.63}}">
+                Високоактивні відходи
+            </option>
+            <option value="{{this.form.emissions_info.emissions_radioactive_type == 1? 11245.14 : 4016.11}}">
+                Середньоактивні та низькоактивні відходи
+            </option>
+        </select>
+        <!-- TAX RATES -->
+
         <input class="lr__form-input"
-               name="gdv"
-               placeholder="Гранично допустимі викиди, мг/м3"
+               name="year"
+               placeholder="Рік екологчного паспорту"
                type="number"
-               [(ngModel)]="this.form.gdv_standards.gdv" required>
+               [(ngModel)]="this.form.additional_information.year" required>
+        <input class="lr__form-input"
+               name="url"
+               placeholder="Посилання на екологічний паспорт"
+               type="text"
+               [(ngModel)]="this.form.additional_information.url" required>
         <button class="lr__form-submit" type="submit">Додати</button>
     </form>
 </div>

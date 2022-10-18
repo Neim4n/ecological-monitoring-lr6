@@ -1,47 +1,69 @@
 <div class="lr__table">
     <table class="lr__table-container">
         <tr class="lr__table-tr tr-header">
-            <th rowspan="2">№ з/п</th>
-            <th rowspan="2">Назва об'єкту</th>
-            <th rowspan="2">Назва забруднюючої речовини</th>
-            <th rowspan="2">Об'єм викидів забруднюючої речовини т/рік</th>
-            <th colspan="2">Нормативи ГДВ забруднюючих речовин із стаціонарних джерел</th>
-            <th rowspan="2">Статус перевищення викидів</th>
-        </tr>
-        <tr class="lr__table-tr tr-header">
-            <th>Величина масової витрати, г/год.</th>
-            <th>Гранично допустимі викиди, мг/м3</th>
+            <th class="nowrap">№ з/п</th>
+            <th>Назва об'єкту</th>
+            <th>Назва забруднюючої речовини</th>
+            <th>Об'єм викидів забруднюючо ї речовини</th>
+            <th>Вид забруднення</th>
+            <th>Ставки податку за викиди в атмосферне повітря забруднюючих речовин стаціонарними джерелами забруднення
+            </th>
+            <th>Сума податку</th>
         </tr>
         <tr *ngIf="loading" class="lr__table-tr loading">
             <th colspan="7">Loading...</th>
         </tr>
-        <tr class="lr__table-tr loading" *ngFor="let geoObject of geoObjects">
-            <td *ngIf="!isEditing">{{geoObject.id + 1}}</td>
-            <td *ngIf="isEditing">
-                <button class="lr__table-button delete" (click)="onDelete(geoObject.id)">
-                    <mat-icon>clear</mat-icon>
-                </button>
-            </td>
-            <td>{{geoObject.name}}</td>
-            <td>{{geoObject['pollutant_name']}}</td>
-            <td>{{geoObject.emissions}}</td>
-            <td>{{geoObject['gdv_standards']['mass_consumption']}}</td>
-            <td>{{geoObject['gdv_standards'].gdv}}</td>
-            <td class="result" [class]="{'bad-status': geoObject.status && isChecked, 'good-status': !geoObject.status && isChecked }">
-                <span *ngIf="geoObject.overrun && isChecked">{{geoObject.overrun}} %</span>
-                <mat-icon *ngIf="!geoObject.status && isChecked">check</mat-icon>
-                <mat-icon *ngIf="geoObject.status && isChecked">clear</mat-icon>
-            </td>
-        </tr>
+        <ng-container *ngFor="let geoObject of geoObjects; let j = index">
+            <tr class="lr__table-tr loading" *ngFor="let info of geoObject['emissions_info']; let i = index">
+                <td class="lr__table-td" *ngIf="i== 0" [attr.rowspan]="geoObject['emissions_info'].length">
+                    {{geoObject.id + 1}}
+                    <div class="lr__table-td-controls">
+                        <button (click)="onDelete(geoObject.id)">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <button *ngIf="!geoObject.isEditing" (click)="toggleObjectEdit(j)">
+                            <mat-icon>mode_edit</mat-icon>
+                        </button>
+                        <button *ngIf="geoObject.isEditing" (click)="saveEditObject(j)">
+                            <mat-icon>done</mat-icon>
+                        </button>
+                    </div>
+                </td>
+                <td class="lr__table-td name" *ngIf="i===0" [attr.rowspan]="geoObject['emissions_info'].length">
+                    <span *ngIf="!geoObject.isEditing">{{geoObject.name}}</span>
+                    <input *ngIf="geoObject.isEditing" type="text"
+                           [(ngModel)]="geoObjects[j].name">
+                    <a href="{{geoObject['additional_information'].url}}">{{geoObject['additional_information'].year}}</a>
+                </td>
+                <td>
+                    <span *ngIf="!geoObject.isEditing">{{info['pollutant_name']}}</span>
+                    <input *ngIf="geoObject.isEditing" type="text"
+                           [(ngModel)]="geoObjects[j]['emissions_info'][i]['pollutant_name']">
+                </td>
+                <td class="nowrap">
+                    <span *ngIf="!geoObject.isEditing">{{info.emissions}}</span>
+                    <input *ngIf="geoObject.isEditing" type="number"
+                           [(ngModel)]="geoObjects[j]['emissions_info'][i]['emissions']">
+                    {{emissionDmensionalUnits[info.emissions_type]}}
+                </td>
+                <td>{{emissionTypes[info.emissions_type]}}</td>
+                <td class="nowrap">
+                    <span *ngIf="!geoObject.isEditing">{{info['tax_rates']}}</span>
+                    <input *ngIf="geoObject.isEditing" type="number"
+                           [(ngModel)]="geoObjects[j]['emissions_info'][i]['tax_rates']">
+                    грн.
+                </td>
+                <td *ngIf="i===0"
+                    [attr.rowspan]="geoObject['emissions_info'].length" class="nowrap">
+                    {{geoObject['emissions_info']['tax_amount'] ? geoObject['emissions_info']['tax_amount'] + " грн." : ''}}
+                </td>
+            </tr>
+        </ng-container>
     </table>
-    <div class="lr__table-details" *ngIf="information?.url">
-        <a [href]="information.url"> Детальна інформація ({{information.year}} рік)</a>
-    </div>
 
     <div class="lr__table-control">
-        <button class="lr__table-button" [disabled]="isChecked" (click)="compareEmissions()">Порівняти викиди з ГДК
-        </button>
-        <button class="lr__table-button" [ngClass]="{'editing': isEditing}" (click)="toggleEdit()">Редагувати таблицю
+        <button class="lr__table-button" [disabled]="isChecked" (click)="calculateTaxAmount()">
+            Обрахувати налоги
         </button>
     </div>
 </div>
