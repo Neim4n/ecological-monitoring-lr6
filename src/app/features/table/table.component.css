@@ -92,10 +92,19 @@
 .lr__table-tr .lr__table-td-controls button {
   background: none;
 }
+.lr__table-tr .lr__table-td-controls button.delete {
+  color: indianred;
+}
+.lr__table-tr .lr__table-td-controls button.edit {
+  color: dodgerblue;
+}
+.lr__table-tr .lr__table-td-controls button.save {
+  color: green;
+}
 .lr__table-tr .lr__table-td-controls button mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+  font-size: 17px;
+  width: 18px;
+  height: 18px;
 }
 .lr__table-button {
   font-size: 14px;

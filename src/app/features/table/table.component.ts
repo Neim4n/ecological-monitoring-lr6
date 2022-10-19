@@ -54,7 +54,7 @@ export class TableComponent implements OnInit {
             let tax_amount = 0;
 
             object.emissions_info.forEach((info: any) => {
-                switch (info.emissions_type) {
+                switch (+info.emissions_type) {
                     case (1):
                         tax_amount += info.emissions * info.tax_rates;
                         break;

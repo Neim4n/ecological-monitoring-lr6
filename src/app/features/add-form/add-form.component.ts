@@ -100,6 +100,7 @@ export class AddFormComponent implements OnInit {
                 .subscribe((res: any) => console.log(res),
                     (err) => console.error(err),
                     () => {
+                        this.formControl.form.reset();
                         this.form = {
                             name: null,
                             emissions_info: {

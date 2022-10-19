@@ -6,8 +6,7 @@
             <th>Назва забруднюючої речовини</th>
             <th>Об'єм викидів забруднюючо ї речовини</th>
             <th>Вид забруднення</th>
-            <th>Ставки податку за викиди в атмосферне повітря забруднюючих речовин стаціонарними джерелами забруднення
-            </th>
+            <th>Ставки податку</th>
             <th>Сума податку</th>
         </tr>
         <tr *ngIf="loading" class="lr__table-tr loading">
@@ -18,13 +17,13 @@
                 <td class="lr__table-td" *ngIf="i== 0" [attr.rowspan]="geoObject['emissions_info'].length">
                     {{geoObject.id + 1}}
                     <div class="lr__table-td-controls">
-                        <button (click)="onDelete(geoObject.id)">
+                        <button (click)="onDelete(geoObject.id)" class="delete">
                             <mat-icon>clear</mat-icon>
                         </button>
-                        <button *ngIf="!geoObject.isEditing" (click)="toggleObjectEdit(j)">
+                        <button *ngIf="!geoObject.isEditing" (click)="toggleObjectEdit(j)" class="edit">
                             <mat-icon>mode_edit</mat-icon>
                         </button>
-                        <button *ngIf="geoObject.isEditing" (click)="saveEditObject(j)">
+                        <button *ngIf="geoObject.isEditing" (click)="saveEditObject(j)" class="save">
                             <mat-icon>done</mat-icon>
                         </button>
                     </div>
@@ -44,7 +43,7 @@
                     <span *ngIf="!geoObject.isEditing">{{info.emissions}}</span>
                     <input *ngIf="geoObject.isEditing" type="number"
                            [(ngModel)]="geoObjects[j]['emissions_info'][i]['emissions']">
-                    {{emissionDmensionalUnits[info.emissions_type]}}
+                    {{info.emissions_radioactive_type === "2"? "cм^3": emissionDmensionalUnits[info.emissions_type]}}
                 </td>
                 <td>{{emissionTypes[info.emissions_type]}}</td>
                 <td class="nowrap">
@@ -63,7 +62,7 @@
 
     <div class="lr__table-control">
         <button class="lr__table-button" [disabled]="isChecked" (click)="calculateTaxAmount()">
-            Обрахувати налоги
+            Обрахувати податки
         </button>
     </div>
 </div>
