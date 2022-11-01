@@ -1,19 +1,37 @@
 .lr__table {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   width: 100%;
+  max-width: 1440px;
+  min-width: 280px;
   padding: 70px 30px;
+  margin: 0 auto;
 }
 .lr__table-container {
-  width: 100%;
-  overflow: hidden;
+  display: inline-block;
+  overflow-x: auto;
+  max-width: 100%;
   margin: 70px 0 70px 0;
+  line-height: 1.3;
   border-collapse: collapse;
+  vertical-align: top;
+  white-space: nowrap;
   border: 8px solid white;
   border-radius: 20px;
   background-color: white;
   box-shadow: 0 0 8px #9c9c9c;
+  -webkit-overflow-scrolling: touch;
+}
+.lr__table-container::-webkit-scrollbar {
+  height: 10px;
+}
+.lr__table-container::-webkit-scrollbar-track {
+  background: white;
+}
+.lr__table-container::-webkit-scrollbar-thumb {
+  background: lightskyblue;
+  border-radius: 40px;
+}
+.lr__table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 .lr__table-container .tr-header {
   background-color: lightskyblue;
@@ -23,11 +41,11 @@
   border-radius: 20px 20px 0 0;
 }
 .lr__table-container th, .lr__table-container td {
+  position: relative;
+  height: 48px;
   padding: 20px;
   text-align: center;
   border: 1px solid grey;
-  position: relative;
-  height: 48px;
 }
 .lr__table-container th.result span, .lr__table-container td.result span {
   padding: 0 0 15px 0;
@@ -42,13 +60,18 @@
   transform: translate(-50%, -50%);
 }
 .lr__table-container td input {
+  padding: 4px;
   border: 1px solid grey;
   border-radius: 4px;
-  padding: 4px;
+}
+.lr__table-control {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 .lr__table-details {
-  margin: 10px 0 70px 20px;
   align-self: flex-start;
+  margin: 10px 0 70px 20px;
 }
 .lr__table-details a {
   color: black;
@@ -73,19 +96,19 @@
   position: relative;
 }
 .lr__table-tr .lr__table-td.name a {
-  position: absolute;
   font-size: 13px;
+  position: absolute;
   top: 2px;
   right: 2px;
   color: grey;
 }
 .lr__table-tr .lr__table-td.name a:hover {
-  color: black;
   text-decoration: underline;
+  color: black;
 }
 .lr__table-tr .lr__table-td-controls {
-  position: absolute;
   font-size: 13px;
+  position: absolute;
   top: 0;
   left: 0;
 }
@@ -130,8 +153,8 @@
   background-color: unset;
 }
 .lr__table-button.delete:hover {
-  box-shadow: unset;
   color: darkred;
+  box-shadow: unset;
 }
 .lr__table .nowrap {
   white-space: nowrap;

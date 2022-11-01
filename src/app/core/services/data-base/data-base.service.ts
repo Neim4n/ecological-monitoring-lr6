@@ -11,20 +11,20 @@ export class DataBaseService {
     constructor(private http: HttpClient) {
     }
 
-    getGeoObjects() {
-        return this.http.get(API_URL + '/geo_objects');
+    getAreas() {
+        return this.http.get(API_URL + '/areas');
     }
 
-    addNewGeoObject(body: any) {
-        return this.http.post(API_URL + '/geo_objects', body)
+    addNewArea(body: any) {
+        return this.http.post(API_URL + '/areas', body)
     }
 
-    deleteGeoObject(id: number) {
-        return this.http.delete(API_URL + '/geo_objects/' + id)
+    deleteArea(id: number) {
+        return this.http.delete(API_URL + '/areas/' + id)
     }
 
     saveResults(id: number, body: any) {
-        return this.http.put(API_URL + '/geo_objects/' + id, body)
+        return this.http.put(API_URL + '/areas/' + id, body)
     }
 }
 
