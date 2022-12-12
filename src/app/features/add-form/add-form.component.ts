@@ -12,32 +12,23 @@ export class AddFormComponent implements OnInit {
 
     form: any = {
         name: null,
-        POP: null,
-        HI: null,
-        emissions_info: {
-            pollutant_name: null,
-            LADD: null,
-            Tout: null,
-            Vout: null,
-            Tin: null,
-            Vin: null,
-            BW: null,
-            AT: null,
-            EF: null,
-            ED: null,
-            Ca: null,
-            Ch: null,
-            HQ: null,
-            AC: null,
-            RfC: null,
-            CR: null,
-            SF: null,
-            PCR: null
+        sources: null,
+        losses: {
+            type: 1,
+            name: null,
+            qm: null,
+            qnorm: null,
+            T: null,
+            Z: null,
+            m: null,
+            P: null,
+            A: null,
+            GDK: null,
+            Kt: null,
+            Knas: null,
+            Kf: null,
+            Kz: null
         },
-        additional_information: {
-            year: null,
-            url: null
-        }
     }
 
     constructor(private dataBaseService: DataBaseService) {
@@ -50,41 +41,32 @@ export class AddFormComponent implements OnInit {
         console.log(this.form);
         if (this.formControl.form.valid) {
 
-            this.form.emissions_info = [this.form.emissions_info];
+            this.form.losses = [this.form.losses];
 
-            this.dataBaseService.addNewArea(this.form)
+            this.dataBaseService.addNewObject(this.form)
                 .subscribe((res: any) => console.log(res),
                     (err) => console.error(err),
                     () => {
                         this.formControl.form.reset();
                         this.form = {
                             name: null,
-                            POP: null,
-                            HI: null,
-                            emissions_info: {
-                                pollutant_name: null,
-                                LADD: null,
-                                Tout: null,
-                                Vout: null,
-                                Tin: null,
-                                Vin: null,
-                                BW: null,
-                                AT: null,
-                                EF: null,
-                                ED: null,
-                                Ca: null,
-                                Ch: null,
-                                HQ: null,
-                                AC: null,
-                                RfC: null,
-                                CR: null,
-                                SF: null,
-                                PCR: null
+                            sources: null,
+                            losses: {
+                                type: 1,
+                                name: null,
+                                qm: null,
+                                qnorm: null,
+                                T: null,
+                                Z: null,
+                                m: null,
+                                P: null,
+                                A: null,
+                                GDK: null,
+                                Kt: null,
+                                Knas: null,
+                                Kf: null,
+                                Kz: null
                             },
-                            additional_information: {
-                                year: null,
-                                url: null
-                            }
                         }
                     });
         }

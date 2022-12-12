@@ -2,154 +2,114 @@
     <table class="lr__table-container">
         <tr class="lr__table-tr tr-header">
             <th class="nowrap">№ з/п</th>
-            <th>Місто</th>
+            <th>Об'єкт</th>
             <th>Назва забруднюючої речовини</th>
             <!-- EMISSION -->
-            <th>Концентрація речовини в амтосферному повітрі <br/> (Ca) <br/> мг/куб.м</th>
-            <th>Концентрація речовини у приміщенні <br/> (Ch) <br/> мг/куб.м</th>
-            <th>Час поза приміщенням <br/> (Tout) <br/> год/доба</th>
-            <th>Час у приміщенні <br/> (Tin) <br/> год/доба</th>
-            <th>Швидкість дихання поза приміщенням <br/> (Vout) <br/> куб.м/год</th>
-            <th>Швидкість дихання у приміщенні <br/> (Vin) <br/> куб.м/год</th>
-            <th>Частота впливу <br/> (EF) <br/> днів/рік</th>
-            <th>Тривалість впливу <br/> (ED) <br/> років</th>
-            <th>Маса тіла <br/> (BW) <br/> кг</th>
-            <th>Період осереднення ексопиззиції <br/> (AT) <br/> років</th>
-            <th>Середня концентрація <br/> (AC) <br/> мг/куб.м</th>
-            <th>Рефернтра концентрація <br/> (RfC) <br/> мг/куб.м</th>
-            <th>Фактор нахилу <br/> (SF) <br/> мг/(кг * доба)</th>
-            <th>Чисельність популяції <br/> (POP)</th>
+            <th>Середнє значення  масової  витрати забруднюючої речовини <br/> (qm) <br/> г/с</th>
+            <th>Значення  затвердженого  нормативу  викиду забруднюючої речовини <br/> (qnorm) <br/> г/с</th>
+            <th>Час роботи джерела викиду  <br/> (T) <br/> год</th>
+            <th>Розмір  мінімальної  заробітної  плати <br/> (P)</th>
+            <th>Середньодобова граничнодопустима концентрація <br/> (GDK) <br/> мг/куб.м.</th>
+            <th>Коефіцієнт чисельності  жителів <br/> (Knas) </th>
+            <th>Коефіцієнт народногосподарського значення населеного пункту <br/> (Kf)</th>
+            <th>Коефіцієнт забруднення атмосферного  повітря<br/> (Kz)</th>
             <!-- CALCULATED -->
-            <th>Середня добова доза <br/> (LADD)</th>
-            <th>Коефіціент ризику розвитку неканцерогенних ефектів <br/> (HQ)</th>
-            <th>Сума HQ всіх забруднювачів <br/> (HI)</th>
-            <th>Індивідуальний канцерогенний ризик <br/> (CR)</th>
-            <th>Індивідуальний популяційний ризик <br/> (PCR)</th>
+            <th>Маса забруднюючої  речовини<br/> (m)</th>
+            <th>Показник  відносної  небезпечності <br/> (A)</th>
+            <th>Коефіціент територіально соціально-екологічних особливостей <br/> (Kt)</th>
+            <th>Збиток <br/> (Z)</th>
         </tr>
         <tr *ngIf="loading" class="lr__table-tr loading">
             <th colspan="7">Loading...</th>
         </tr>
-        <ng-container *ngFor="let area of areas; let j = index">
-            <tr class="lr__table-tr loading" *ngFor="let info of area['emissions_info']; let i = index">
+        <ng-container *ngFor="let object of objects; let j = index">
+            <tr class="lr__table-tr loading" *ngFor="let info of object['losses']; let i = index">
                 <!-- Info -->
-                <td class="lr__table-td" *ngIf="i== 0" [attr.rowspan]="area['emissions_info'].length">
-                    {{area.id + 1}}
+                <td class="lr__table-td" *ngIf="i== 0" [attr.rowspan]="object['losses'].length">
+                    {{object.id + 1}}
                     <div class="lr__table-td-controls">
-                        <button (click)="onDelete(area.id)" class="delete">
+                        <button (click)="onDelete(object.id)" class="delete">
                             <mat-icon>clear</mat-icon>
                         </button>
-                        <button *ngIf="!area.isEditing" (click)="toggleObjectEdit(j)" class="edit">
+                        <button *ngIf="!object.isEditing" (click)="toggleObjectEdit(j)" class="edit">
                             <mat-icon>mode_edit</mat-icon>
                         </button>
-                        <button *ngIf="area.isEditing" (click)="saveEditObject(j)" class="save">
+                        <button *ngIf="object.isEditing" (click)="saveEditObject(j)" class="save">
                             <mat-icon>done</mat-icon>
                         </button>
                     </div>
                 </td>
-                <td class="lr__table-td name" *ngIf="i===0" [attr.rowspan]="area['emissions_info'].length">
-                    <span *ngIf="!area.isEditing">{{area.name}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j].name">
-                    <a href="{{area['additional_information'].url}}">{{area['additional_information'].year}}</a>
+                <td class="lr__table-td name" *ngIf="i===0" [attr.rowspan]="object['losses'].length">
+                    <span *ngIf="!object.isEditing">{{object.name}}</span>
+                    <input *ngIf="object.isEditing" type="text"
+                           [(ngModel)]="objects[j].name">
+                    <a href="{{object['sources']}}">🛈</a>
                 </td>
                 <td>
-                    <span *ngIf="!area.isEditing">{{info['pollutant_name']}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['pollutant_name']">
+                    <span *ngIf="!object.isEditing">{{info['name']}}</span>
+                    <input *ngIf="object.isEditing" type="text"
+                           [(ngModel)]="objects[j]['losses'][i]['name']">
                 </td>
                 <!-- Emission -->
                 <td>
-                    <span *ngIf="!area.isEditing">{{info.Ca}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['Ca']">
+                    <span *ngIf="!object.isEditing">{{info.qm}}</span>
+                    <input *ngIf="object.isEditing" type="number"
+                           [(ngModel)]="objects[j]['losses'][i]['qm']">
                 </td>
                 <td>
-                    <span *ngIf="!area.isEditing">{{info.Ch}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['Ch']">
+                    <span *ngIf="!object.isEditing">{{info.qnorm}}</span>
+                    <input *ngIf="object.isEditing" type="number"
+                           [(ngModel)]="objects[j]['losses'][i]['qnorm']">
                 </td>
                 <td>
-                    <span *ngIf="!area.isEditing">{{info.Tout}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['Tout']">
+                    <span *ngIf="!object.isEditing">{{info.T}}</span>
+                    <input *ngIf="object.isEditing" type="number"
+                           [(ngModel)]="objects[j]['losses'][i]['T']">
                 </td>
                 <td>
-                    <span *ngIf="!area.isEditing">{{info.Tin}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['Tin']">
+                    <span *ngIf="!object.isEditing">{{info.P}}</span>
+                    <input *ngIf="object.isEditing" type="number"
+                           [(ngModel)]="objects[j]['losses'][i]['P']">
                 </td>
                 <td>
-                    <span *ngIf="!area.isEditing">{{info.Vout}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['Vout']">
+                    <span *ngIf="!object.isEditing">{{info.GDK}}</span>
+                    <input *ngIf="object.isEditing" type="number"
+                           [(ngModel)]="objects[j]['losses'][i]['GDK']">
                 </td>
                 <td>
-                    <span *ngIf="!area.isEditing">{{info.Vin}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['Vin']">
+                    <span *ngIf="!object.isEditing">{{info.Knas}}</span>
+                    <input *ngIf="object.isEditing" type="number"
+                           [(ngModel)]="objects[j]['losses'][i]['Knas']">
                 </td>
                 <td>
-                    <span *ngIf="!area.isEditing">{{info.EF}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['EF']">
+                    <span *ngIf="!object.isEditing">{{info.Kf}}</span>
+                    <input *ngIf="object.isEditing" type="number"
+                           [(ngModel)]="objects[j]['losses'][i]['Kf']">
                 </td>
                 <td>
-                    <span *ngIf="!area.isEditing">{{info.ED}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['ED']">
-                </td>
-                <td>
-                    <span *ngIf="!area.isEditing">{{info.BW}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['BW']">
-                </td>
-                <td>
-                    <span *ngIf="!area.isEditing">{{info.AT}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['AT']">
-                </td>
-                <td>
-                    <span *ngIf="!area.isEditing">{{info.AC}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['AC']">
-                </td>
-                <td>
-                    <span *ngIf="!area.isEditing">{{info.RfC}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['RfC']">
-                </td>
-                <td>
-                    <span *ngIf="!area.isEditing">{{info.SF}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['emissions_info'][i]['SF']">
-                </td>
-                <td>
-                    <span *ngIf="!area.isEditing">{{area.POP}}</span>
-                    <input *ngIf="area.isEditing" type="text"
-                           [(ngModel)]="areas[j]['POP']">
+                    <span *ngIf="!object.isEditing">{{info.Kz}}</span>
+                    <input *ngIf="object.isEditing" type="number"
+                           [(ngModel)]="objects[j]['losses'][i]['Kz']">
                 </td>
                 <!-- Calculated -->
                 <td class="nowrap">
-                    {{info.LADD || ' '}}
+                    {{info.m  ? info.m.toFixed(3) : ' '}}
                 </td>
                 <td class="nowrap">
-                    {{info.HQ ? info.HQ.toFixed(3) : ' '}}
-                </td>
-                <td *ngIf="i===0" [attr.rowspan]="area['emissions_info'].length" class="nowrap">
-                    {{area.HI ? area.HI.toFixed(3) : ' '}}
+                    {{info.A ? info.A.toFixed(3) : ' '}}
                 </td>
                 <td class="nowrap">
-                    {{info.CR || ' '}}
+                    {{info.Kt || ' '}}
                 </td>
                 <td class="nowrap">
-                    {{info.PCR ? info.PCR.toFixed(3) : ' '}}
+                    {{info.Z || info.Z === 0 ? info.Z.toFixed(3) : ' '}}
                 </td>
             </tr>
         </ng-container>
     </table>
     <div class="lr__table-control">
-        <button class="lr__table-button" [disabled]="isChecked" (click)="calculateRisks()">
-            Обрахувати ризики
+        <button class="lr__table-button" [disabled]="isChecked" (click)="calculateLosses()">
+            Обрахувати збитки
         </button>
     </div>
 </div>

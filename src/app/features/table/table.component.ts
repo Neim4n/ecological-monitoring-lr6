@@ -8,7 +8,7 @@ import { delay, finalize } from "rxjs";
     styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-    areas: any[];
+    objects: any[];
     loading: boolean = false;
     isChecked: boolean = false;
     isEditing: boolean = false;
@@ -17,54 +17,58 @@ export class TableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loadAreas();
+        this.loadObjects();
     }
 
-    loadAreas() {
+    loadObjects() {
         this.loading = true;
 
-        this.dataBaseService.getAreas()
+        this.dataBaseService.getObjects()
             .pipe(
                 delay(300),
                 finalize(() => this.loading = false)
             )
             .subscribe((res: any) => {
-                this.areas = res;
+                this.objects = res;
             });
     }
 
-    calculateRisks() {
-        this.areas.forEach((object: any) => {
-            const {POP} = object;
-            let newHI = 0;
-
-            object.emissions_info.forEach((info: any) => {
-                const {Tout, Vout, Tin, Vin, BW, AT, EF, ED, Ca, Ch, AC, RfC, SF} = info
-                info.LADD = ((Ca * Tout * Vout) + (Ch * Tin * Vin)) * EF * ED / (BW * AT * 365);
-                info.HQ = AC / RfC;
-                info.CR = info.LADD * SF;
-                info.PCR = info.CR * POP;
-                newHI += info.HQ;
+    calculateLosses() {
+        this.objects.forEach((object: any) => {
+            object.losses.forEach((info: any) => {
+                const {qm, qnorm, T, P, GDK, Knas, Kf} = info
+                info.A = 1 / GDK;
+                info.Kt = Knas * Kf;
+                info.m = 3.6 * Math.pow(10, -3) * (qm - qnorm) * T;
+                info.Z = qm >= qnorm ? info.m * 1.1 * P * info.A * info.Kt * info.Kz : 0;
             })
-
-            object.HI = newHI;
         })
     }
 
     toggleObjectEdit(index: number) {
-        this.areas[index].isEditing = !this.areas[index].isEditing;
+        this.objects[index].isEditing = !this.objects[index].isEditing;
     }
 
     saveEditObject(index: number) {
-        const editGeoObject = this.areas[index];
+        const editGeoObject = this.objects[index];
         delete editGeoObject.isEditing;
-        this.dataBaseService.saveResults(editGeoObject.id, editGeoObject).subscribe((res) => console.log(res));
+
+        const body = JSON.parse(JSON.stringify(editGeoObject));
+
+        body.losses.forEach((e: any) => {
+            e.A = null;
+            e.Kt = null;
+            e.m = null;
+            e.Z = null;
+        })
+
+        this.dataBaseService.saveResults(editGeoObject.id, body).subscribe((res) => this.calculateLosses());
     }
 
     onDelete(id: number) {
         if (confirm("Ви впевнені, що хочете видалити?")) {
-            this.areas = this.areas.filter((object: any) => object.id !== id);
-            this.dataBaseService.deleteArea(id)
+            this.objects = this.objects.filter((object: any) => object.id !== id);
+            this.dataBaseService.deleteObject(id)
                 .subscribe((res: any) => console.log(res),
                     (err) => console.error(err));
         }

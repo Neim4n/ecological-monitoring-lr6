@@ -3,10 +3,9 @@
     <form class="lr__form-container" (submit)="onSubmit()" #f="ngForm" novalidate>
         <h3 class="lr__form-header">Додати новий об'єкт</h3>
 
-        <!-- Name , Pollutant_name, Emissions_type -->
         <input class="lr__form-input"
                name="name"
-               placeholder="Назва міста"
+               placeholder="Назва об'єкту"
                type="text" [(ngModel)]="this.form.name"
                minlength="3"
                required>
@@ -14,107 +13,65 @@
                name="pollutant_name"
                placeholder="Назва забруднюючої речовини"
                type="text"
-               [(ngModel)]="this.form.emissions_info.pollutant_name"
+               [(ngModel)]="this.form.losses.name"
                minlength="3"
                required>
 
-
         <input class="lr__form-input"
                name="Ca"
-               placeholder="Концентрація речовини в амтосферному повітрі мг/куб.м"
+               placeholder="Середнє значення  масової  витрати забруднюючої речовини г/с"
                type="number"
-               [(ngModel)]="this.form.emissions_info.Ca"
+               [(ngModel)]="this.form.losses.qm"
                required>
         <input class="lr__form-input"
                name="Ch"
-               placeholder="Концентрація речовини у приміщенні мг/куб.м"
+               placeholder="Значення  затвердженого  нормативу  викиду забруднюючої речовини г/с"
                type="number"
-               [(ngModel)]="this.form.emissions_info.Ch"
+               [(ngModel)]="this.form.losses.qnorm"
                required>
         <input class="lr__form-input"
                name="Tout"
-               placeholder="Час поза приміщенням год/доба"
+               placeholder="Час роботи джерела викиду год"
                type="number"
-               [(ngModel)]="this.form.emissions_info.Tout"
+               [(ngModel)]="this.form.losses.T"
                required>
         <input class="lr__form-input"
                name="Tin"
-               placeholder="Час у приміщенні год/доба"
+               placeholder="Розмір  мінімальної  заробітної  плати"
                type="number"
-               [(ngModel)]="this.form.emissions_info.Tin"
+               [(ngModel)]="this.form.losses.P"
                required>
         <input class="lr__form-input"
                name="Vout"
-               placeholder="Швидкість дихання поза приміщенням куб.м/год"
+               placeholder="Середньодобова граничнодопустима концентрація"
                type="number"
-               [(ngModel)]="this.form.emissions_info.Vout"
+               [(ngModel)]="this.form.losses.GDK"
                required>
         <input class="lr__form-input"
                name="Vin"
-               placeholder="Швидкість дихання у приміщенн куб.м/год"
+               placeholder="Коефіцієнт чисельності жителів"
                type="number"
-               [(ngModel)]="this.form.emissions_info.Vin"
+               [(ngModel)]="this.form.losses.Knas"
                required>
         <input class="lr__form-input"
                name="EF"
-               placeholder="Частота впливу днів/рік"
+               placeholder="Коефіцієнт народногосподарського значення населеного пункту"
                type="number"
-               [(ngModel)]="this.form.emissions_info.EF"
+               [(ngModel)]="this.form.losses.Kf"
                required>
         <input class="lr__form-input"
                name="ED"
-               placeholder="Тривалість впливу років"
+               placeholder="Коефіцієнт забруднення атмосферного  повітря"
                type="number"
-               [(ngModel)]="this.form.emissions_info.ED"
-               required>
-        <input class="lr__form-input"
-               name="BW"
-               placeholder="Маса тіла кг"
-               type="number"
-               [(ngModel)]="this.form.emissions_info.BW"
-               required>
-        <input class="lr__form-input"
-               name="AT"
-               placeholder="Період осереднення ексопиззиції років"
-               type="number"
-               [(ngModel)]="this.form.emissions_info.AT"
-               required>
-        <input class="lr__form-input"
-               name="AC"
-               placeholder="Середня концентрація мг/куб.м"
-               type="number"
-               [(ngModel)]="this.form.emissions_info.AC"
-               required>
-        <input class="lr__form-input"
-               name="RfC"
-               placeholder="Рефернтра концентрація мг/куб.м"
-               type="number"
-               [(ngModel)]="this.form.emissions_info.RfC"
-               required>
-        <input class="lr__form-input"
-               name="SF"
-               placeholder="Фактор нахилу мг/(кг * доба)"
-               type="number"
-               [(ngModel)]="this.form.emissions_info.SF"
-               required>
-        <input class="lr__form-input"
-               name="POP"
-               placeholder="Чисельність популяції  "
-               type="number"
-               [(ngModel)]="this.form.POP"
+               [(ngModel)]="this.form.losses.Kz"
                required>
 
-
-        <input class="lr__form-input"
-               name="year"
-               placeholder="Рік екологчного паспорту"
-               type="number"
-               [(ngModel)]="this.form.additional_information.year" required>
         <input class="lr__form-input"
                name="url"
-               placeholder="Посилання на екологічний паспорт"
+               placeholder="Джерело"
                type="text"
-               [(ngModel)]="this.form.additional_information.url" required>
+               [(ngModel)]="this.form.sources" required>
+
         <button class="lr__form-submit" type="submit">Додати</button>
     </form>
 </div>
