@@ -5,66 +5,166 @@
 
         <input class="lr__form-input"
                name="name"
-               placeholder="Назва об'єкту"
+               placeholder="Надзвичайна ситуація"
                type="text" [(ngModel)]="this.form.name"
                minlength="3"
                required>
-        <input class="lr__form-input"
-               name="pollutant_name"
-               placeholder="Назва забруднюючої речовини"
-               type="text"
-               [(ngModel)]="this.form.losses.name"
-               minlength="3"
-               required>
 
-        <input class="lr__form-input"
-               name="Ca"
-               placeholder="Середнє значення  масової  витрати забруднюючої речовини г/с"
-               type="number"
-               [(ngModel)]="this.form.losses.qm"
-               required>
-        <input class="lr__form-input"
-               name="Ch"
-               placeholder="Значення  затвердженого  нормативу  викиду забруднюючої речовини г/с"
-               type="number"
-               [(ngModel)]="this.form.losses.qnorm"
-               required>
-        <input class="lr__form-input"
-               name="Tout"
-               placeholder="Час роботи джерела викиду год"
-               type="number"
-               [(ngModel)]="this.form.losses.T"
-               required>
-        <input class="lr__form-input"
-               name="Tin"
-               placeholder="Розмір  мінімальної  заробітної  плати"
-               type="number"
-               [(ngModel)]="this.form.losses.P"
-               required>
-        <input class="lr__form-input"
-               name="Vout"
-               placeholder="Середньодобова граничнодопустима концентрація"
-               type="number"
-               [(ngModel)]="this.form.losses.GDK"
-               required>
-        <input class="lr__form-input"
-               name="Vin"
-               placeholder="Коефіцієнт чисельності жителів"
-               type="number"
-               [(ngModel)]="this.form.losses.Knas"
-               required>
-        <input class="lr__form-input"
-               name="EF"
-               placeholder="Коефіцієнт народногосподарського значення населеного пункту"
-               type="number"
-               [(ngModel)]="this.form.losses.Kf"
-               required>
-        <input class="lr__form-input"
-               name="ED"
-               placeholder="Коефіцієнт забруднення атмосферного  повітря"
-               type="number"
-               [(ngModel)]="this.form.losses.Kz"
-               required>
+        <select class="lr__form-input lr__form-select" name="type"
+                [(ngModel)]="this.form.losses.type" required (change)="onChangeTypeSelect()">
+            <option value="null" disabled selected hidden>Тип збитків</option>
+            <option value="1">
+                Збитки від втрати життя та здоров'я населення
+            </option>
+            <option value="2">
+                Збитки від руйнування та пошкодження основних фондів, знищення майна та продукції
+            </option>
+            <option value="4">
+                Збитки від вилучення або порушення сільськогосподарських угідь
+            </option>
+            <option value="6">
+                Збитки від втрати деревини та інших лісових ресурсів
+            </option>
+        </select>
+
+        <ng-container *ngIf="+this.form.losses.type === 1">
+            <input class="lr__form-input"
+                   name="MlN"
+                   placeholder="Втрати від легкого нещасного випадку"
+                   type="number"
+                   [(ngModel)]="this.form.losses.MlN"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="MtN"
+                   placeholder="Втрати від тяжкого нещасного випадку"
+                   type="number"
+                   [(ngModel)]="this.form.losses.MtN"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="Mi"
+                   placeholder="Втрати від отримання людиною інвалідності"
+                   type="number"
+                   [(ngModel)]="this.form.losses.Mi"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="MzN"
+                   placeholder="Втрати від загибелі людини"
+                   type="number"
+                   [(ngModel)]="this.form.losses.MzN"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="Nz"
+                   placeholder="Кількість постраждалих"
+                   type="number"
+                   [(ngModel)]="this.form.losses.Nz"
+                   minlength="1"
+                   required>
+        </ng-container>
+
+        <ng-container *ngIf="+this.form.losses.type === 2">
+            <input class="lr__form-input"
+                   name="fv"
+                   placeholder="Збитки від руйнування та пошкодження основних фондів виробничого призначення"
+                   type="number"
+                   [(ngModel)]="this.form.losses.fv"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="fg"
+                   placeholder="Збитки від руйнування та пошкодження основних фондів невиробничого призначення"
+                   type="number"
+                   [(ngModel)]="this.form.losses.fg"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="pr"
+                   placeholder="Збитки від втрат готової промислової та сільськогосподарської продукції"
+                   type="number"
+                   [(ngModel)]="this.form.losses.pr"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="prs"
+                   placeholder="Збитки від втрат незібраної сільськогосподарської продукції"
+                   type="number"
+                   [(ngModel)]="this.form.losses.prs"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="sn"
+                   placeholder="Збитки від втрат запасів сировини"
+                   type="number"
+                   [(ngModel)]="this.form.losses.sn"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="mdg"
+                   placeholder="Збитки від втрат майна громадян та організацій"
+                   type="number"
+                   [(ngModel)]="this.form.losses.mdg"
+                   minlength="1"
+                   required>
+        </ng-container>
+
+        <ng-container *ngIf="+this.form.losses.type === 4">
+            <input class="lr__form-input"
+                   name="n"
+                   placeholder="Норматив збитків"
+                   type="number"
+                   [(ngModel)]="this.form.losses.n"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="p"
+                   placeholder="Площа сільськогосподарських угідь"
+                   type="number"
+                   [(ngModel)]="this.form.losses.p"
+                   minlength="1"
+                   required>
+        </ng-container>
+
+
+        <ng-container *ngIf="+this.form.losses.type === 6">
+            <input class="lr__form-input"
+                   name="n"
+                   placeholder="Норматив збитків"
+                   type="number"
+                   [(ngModel)]="this.form.losses.n"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="k"
+                   placeholder="Коефіцієнт продуктивності лісів"
+                   type="number"
+                   [(ngModel)]="this.form.losses.k"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="p"
+                   placeholder="Площа сільськогосподарських угідь"
+                   type="number"
+                   [(ngModel)]="this.form.losses.p"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="N1"
+                   placeholder="Норматив збитків, до яких угіддя відносилися"
+                   type="number"
+                   [(ngModel)]="this.form.losses.N1"
+                   minlength="1"
+                   required>
+            <input class="lr__form-input"
+                   name="N2"
+                   placeholder="Норматив збитків, після шкідливого впливу"
+                   type="number"
+                   [(ngModel)]="this.form.losses.N2"
+                   minlength="1"
+                   required>
+        </ng-container>
 
         <input class="lr__form-input"
                name="url"

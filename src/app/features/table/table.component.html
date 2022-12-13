@@ -1,28 +1,78 @@
 <div class="lr__table">
+    <select class="lr__input lr__select" name="type"
+            [(ngModel)]="this.selectedLossesType" required (change)="filterObjects()">
+        <option value="null" disabled selected hidden>Тип збитків</option>
+        <option value="1">
+            Збитки від втрати життя та здоров'я населення
+        </option>
+        <option value="2">
+            Збитки від руйнування та пошкодження основних фондів, знищення майна та продукції
+        </option>
+        <option value="4">
+            Збитки від вилучення або порушення сільськогосподарських угідь
+        </option>
+        <option value="6">
+            Збитки від втрати деревини та інших лісових ресурсів
+        </option>
+    </select>
+
     <table class="lr__table-container">
         <tr class="lr__table-tr tr-header">
             <th class="nowrap">№ з/п</th>
-            <th>Об'єкт</th>
-            <th>Назва забруднюючої речовини</th>
-            <!-- EMISSION -->
-            <th>Середнє значення  масової  витрати забруднюючої речовини <br/> (qm) <br/> г/с</th>
-            <th>Значення  затвердженого  нормативу  викиду забруднюючої речовини <br/> (qnorm) <br/> г/с</th>
-            <th>Час роботи джерела викиду  <br/> (T) <br/> год</th>
-            <th>Розмір  мінімальної  заробітної  плати <br/> (P)</th>
-            <th>Середньодобова граничнодопустима концентрація <br/> (GDK) <br/> мг/куб.м.</th>
-            <th>Коефіцієнт чисельності  жителів <br/> (Knas) </th>
-            <th>Коефіцієнт народногосподарського значення населеного пункту <br/> (Kf)</th>
-            <th>Коефіцієнт забруднення атмосферного  повітря<br/> (Kz)</th>
-            <!-- CALCULATED -->
-            <th>Маса забруднюючої  речовини<br/> (m)</th>
-            <th>Показник  відносної  небезпечності <br/> (A)</th>
-            <th>Коефіціент територіально соціально-екологічних особливостей <br/> (Kt)</th>
-            <th>Збиток <br/> (Z)</th>
+            <th>Надзвичайна ситуація</th>
+            <!-- LOSSES -->
+            <ng-container *ngIf="+selectedLossesType === 1">
+                <th>Втрати від легкого нещасного випадку <br/> (MlN)</th>
+                <th>Втрати від тяжкого нещасного випадку <br/> (MtN)</th>
+                <th>Втрати від отримання людиною інвалідності <br/> (Mi)</th>
+                <th>Втрати від загибелі людини <br/> (MzN)</th>
+                <th>Кількість постраждалих <br/> (Nz)</th>
+                <!-- CALCULATED -->
+                <th>Втрати від вибуття трудових ресурсів з виробництва <br/> (Svtrr)</th>
+                <th>Витрати на виплату допомоги на поховання <br/> (Svdp)</th>
+                <th>Витрати на виплату пенсій у разі втрати годувальника <br/> (Svvth)</th>
+                <th>Розмір збитків від втрати життя та здоров'я населення <br/> (Nr)</th>
+            </ng-container>
+
+            <ng-container *ngIf="+selectedLossesType === 2">
+                <th>Збитки від руйнування та пошкодження основних фондів виробничого призначення<br/> (fv)</th>
+                <th>Збитки від руйнування та пошкодження основних фондів невиробничого призначення<br/> (fg)</th>
+                <th>Збитки від втрат готової промислової та сільськогосподарської продукції<br/> (pr)</th>
+                <th>Збитки від втрат незібраної сільськогосподарської продукції<br/> (prs)</th>
+                <th>Збитки від втрат запасів сировини <br/> (sn)</th>
+                <th>Збитки від втрат майна громадян та організацій <br/> (mdg)</th>
+                <!-- CALCULATED -->
+                <th>Збитки від руйнування та пошкодження основних фондів <br/> (mr)</th>
+            </ng-container>
+
+            <ng-container *ngIf="+selectedLossesType === 4">
+                <th>Норматив збитків <br/> (n)</th>
+                <th>Площа сільськогосподарських угідь <br/> (p)</th>
+                <!-- CALCULATED -->
+                <th>Збитки від вилучення сільськогосподарських угідь <br/> (rsg1)</th>
+                <th>Збитки від порушення сільськогосподарських угідь <br/> (rsg2)</th>
+                <th>Збитки від вилучення та порушення сільськогосподарських угідь<br/> (rsg)</th>
+            </ng-container>
+
+            <ng-container *ngIf="+selectedLossesType === 6">
+                <th>Норматив збитків <br/> (n)</th>
+                <th>Коефіцієнт продуктивності лісів <br/> (k)</th>
+                <th>Площа лісової ділянки <br/> (p)</th>
+                <th>Норматив збитків, до яких угіддя відносилися<br/> (N1)</th>
+                <th>Норматив збитків, після шкідливого впливу <br/> (N2)</th>
+                <!-- CALCULATED -->
+                <th>Збитки від знищення лісу <br/> (rlg1)</th>
+                <th>Збитки від пошкодження лісів <br/> (rlg2)</th>
+                <th>Збитки для лісів у менш цінній групі <br/> (rlg3)</th>
+                <th>Збитків від втрати деревини та інших лісових ресурсів<br/> (rlg)</th>
+            </ng-container>
+
+            <th>Загальні збитки<br/> (zbytky)</th>
         </tr>
         <tr *ngIf="loading" class="lr__table-tr loading">
             <th colspan="7">Loading...</th>
         </tr>
-        <ng-container *ngFor="let object of objects; let j = index">
+        <ng-container *ngFor="let object of filteredObjects; let j = index">
             <tr class="lr__table-tr loading" *ngFor="let info of object['losses']; let i = index">
                 <!-- Info -->
                 <td class="lr__table-td" *ngIf="i== 0" [attr.rowspan]="object['losses'].length">
@@ -42,67 +92,155 @@
                 <td class="lr__table-td name" *ngIf="i===0" [attr.rowspan]="object['losses'].length">
                     <span *ngIf="!object.isEditing">{{object.name}}</span>
                     <input *ngIf="object.isEditing" type="text"
-                           [(ngModel)]="objects[j].name">
+                           [(ngModel)]="filteredObjects[j].name">
                     <a href="{{object['sources']}}">🛈</a>
                 </td>
-                <td>
-                    <span *ngIf="!object.isEditing">{{info['name']}}</span>
-                    <input *ngIf="object.isEditing" type="text"
-                           [(ngModel)]="objects[j]['losses'][i]['name']">
-                </td>
-                <!-- Emission -->
-                <td>
-                    <span *ngIf="!object.isEditing">{{info.qm}}</span>
-                    <input *ngIf="object.isEditing" type="number"
-                           [(ngModel)]="objects[j]['losses'][i]['qm']">
-                </td>
-                <td>
-                    <span *ngIf="!object.isEditing">{{info.qnorm}}</span>
-                    <input *ngIf="object.isEditing" type="number"
-                           [(ngModel)]="objects[j]['losses'][i]['qnorm']">
-                </td>
-                <td>
-                    <span *ngIf="!object.isEditing">{{info.T}}</span>
-                    <input *ngIf="object.isEditing" type="number"
-                           [(ngModel)]="objects[j]['losses'][i]['T']">
-                </td>
-                <td>
-                    <span *ngIf="!object.isEditing">{{info.P}}</span>
-                    <input *ngIf="object.isEditing" type="number"
-                           [(ngModel)]="objects[j]['losses'][i]['P']">
-                </td>
-                <td>
-                    <span *ngIf="!object.isEditing">{{info.GDK}}</span>
-                    <input *ngIf="object.isEditing" type="number"
-                           [(ngModel)]="objects[j]['losses'][i]['GDK']">
-                </td>
-                <td>
-                    <span *ngIf="!object.isEditing">{{info.Knas}}</span>
-                    <input *ngIf="object.isEditing" type="number"
-                           [(ngModel)]="objects[j]['losses'][i]['Knas']">
-                </td>
-                <td>
-                    <span *ngIf="!object.isEditing">{{info.Kf}}</span>
-                    <input *ngIf="object.isEditing" type="number"
-                           [(ngModel)]="objects[j]['losses'][i]['Kf']">
-                </td>
-                <td>
-                    <span *ngIf="!object.isEditing">{{info.Kz}}</span>
-                    <input *ngIf="object.isEditing" type="number"
-                           [(ngModel)]="objects[j]['losses'][i]['Kz']">
-                </td>
-                <!-- Calculated -->
-                <td class="nowrap">
-                    {{info.m  ? info.m.toFixed(3) : ' '}}
-                </td>
-                <td class="nowrap">
-                    {{info.A ? info.A.toFixed(3) : ' '}}
-                </td>
-                <td class="nowrap">
-                    {{info.Kt || ' '}}
-                </td>
-                <td class="nowrap">
-                    {{info.Z || info.Z === 0 ? info.Z.toFixed(3) : ' '}}
+                <ng-container *ngIf="+selectedLossesType === info.type && +selectedLossesType === 1">
+                    <!-- Emission -->
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.MlN}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['MlN']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.MtN}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['MtN']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.Mi}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['Mi']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.MzN}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['MzN']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.Nz}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['Nz']">
+                    </td>
+
+                    <!-- Calculated -->
+                    <td class="nowrap">
+                        {{info.Svtrr || info.Svtrr === 0 ? info.Svtrr.toFixed(3) : ' '}}
+                    </td>
+                    <td class="nowrap">
+                        {{info.Svdp || info.Svdp === 0 ? info.Svdp.toFixed(3) : ' '}}
+                    </td>
+                    <td class="nowrap">
+                        {{info.Svvth || info.Svvth === 0 ? info.Svvth.toFixed(3) : ' '}}
+                    </td>
+                    <td class="nowrap">
+                        {{info.Nr || info.Nr === 0 ? info.Nr.toFixed(3) : ' '}}
+                    </td>
+                </ng-container>
+                <ng-container *ngIf="+selectedLossesType === info.type && +selectedLossesType === 2">
+                    <!-- Emission -->
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.fv}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['fv']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.fg}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['fg']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.pr}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['pr']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.prs}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['prs']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.sn}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['sn']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.mdg}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['mdg']">
+                    </td>
+
+                    <!-- Calculated -->
+                    <td class="nowrap">
+                        {{info.mr || info.mr === 0 ? info.mr.toFixed(3) : ' '}}
+                    </td>
+                </ng-container>
+                <ng-container *ngIf="+selectedLossesType === info.type && +selectedLossesType === 4">
+                    <!-- Emission -->
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.n}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['n']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.p}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['p']">
+                    </td>
+                    <!-- Calculated -->
+                    <td class="nowrap">
+                        {{info.rsg1 || info.rsg1 === 0 ? info.rsg1.toFixed(3) : ' '}}
+                    </td>
+                    <td class="nowrap">
+                        {{info.rsg2 || info.rsg2 === 0 ? info.rsg2.toFixed(3) : ' '}}
+                    </td>
+                    <td class="nowrap">
+                        {{info.rsg || info.rsg === 0 ? info.rsg.toFixed(3) : ' '}}
+                    </td>
+                </ng-container>
+                <ng-container *ngIf="+selectedLossesType === info.type && +selectedLossesType === 6">
+                    <!-- Emission -->
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.n}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['n']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.k}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['k']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.p}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['p']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.N1}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['N1']">
+                    </td>
+                    <td>
+                        <span *ngIf="!object.isEditing">{{info.N2}}</span>
+                        <input *ngIf="object.isEditing" type="number"
+                               [(ngModel)]="filteredObjects[j]['losses'][i]['N2']">
+                    </td>
+                    <!-- Calculated -->
+                    <td class="nowrap">
+                        {{info.rlg1 || info.rlg1 === 0 ? info.rlg1.toFixed(3) : ' '}}
+                    </td>
+                    <td class="nowrap">
+                        {{info.rlg2 || info.rlg2 === 0 ? info.rlg2.toFixed(3) : ' '}}
+                    </td>
+                    <td class="nowrap">
+                        {{info.rlg3 || info.rlg3 === 0 ? info.rlg3.toFixed(3) : ' '}}
+                    </td>
+                    <td class="nowrap">
+                        {{info.rlg || info.rlg === 0 ? info.rlg.toFixed(3) : ' '}}
+                    </td>
+                </ng-container>
+                <td class="lr__table-td" *ngIf="i===0" [attr.rowspan]="object['losses'].length">
+                    {{object.zbytky || object.zbytky === 0 ? object.zbytky.toFixed(3) : ' '}}
                 </td>
             </tr>
         </ng-container>
